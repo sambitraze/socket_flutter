@@ -1,6 +1,7 @@
-class User{
+class ChatUsers{
   String name;
-  String chatID;
-
-  User(this.name,this.chatID);
+  String messageText;
+  String imageURL;
+  String time;
+  ChatUsers({required this.name,required this.messageText,required this.imageURL,required this.time});
 }

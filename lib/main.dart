@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:socket_flutter/screens/homepage.dart';
+import 'package:socket/screens/homepage.dart';
 
 void main() {
   runApp(MyApp());
