@@ -1,19 +1,24 @@
 import 'package:flutter/material.dart';
-import 'package:socket/screens/homepage.dart';
+import 'package:socket_flutter/screens/intro_screen.dart';
+import 'package:socket_flutter/utils/theme.dart';
 
 void main() {
-  runApp(MyApp());
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
+  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      home: HomeScreen(),
+      title: 'EZ Chat',
+      debugShowCheckedModeBanner: false,
+      theme: lightThemeData(context),
+      darkTheme: darkThemeData(context),
+      themeMode: ThemeMode.dark,
+      home: const IntroScreen1(),
     );
   }
 }
