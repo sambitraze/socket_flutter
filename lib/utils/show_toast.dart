@@ -3,17 +3,58 @@ import 'package:socket_flutter/utils/constants.dart';
 
 void showToast(BuildContext context, String message, String type) {
   final scaffold = ScaffoldMessenger.of(context);
-  scaffold.showSnackBar(
-    SnackBar(
-      content: Text(message),
-      behavior: SnackBarBehavior.floating,
-      action: SnackBarAction(
-        label: 'Dismiss',
-        onPressed: scaffold.hideCurrentSnackBar,
-        textColor: Theme.of(context).brightness == Brightness.dark
-            ? kContentColorLightTheme
-            : kContentColorDarkTheme,
+  // decide the color of the toast
+  if (type == "success") {
+    scaffold.showSnackBar(
+      SnackBar(
+        backgroundColor: kPrimaryColor,
+        content: Text(message , style: const TextStyle(color: Colors.black),),
+        behavior: SnackBarBehavior.floating,
+        action: SnackBarAction(
+          label: 'OK',
+          onPressed: scaffold.hideCurrentSnackBar,
+          textColor: Colors.black,
+        ),
       ),
-    ),
-  );
+    );
+  } else if (type == "error") {
+    scaffold.showSnackBar(
+      SnackBar(
+        backgroundColor: kErrorColor,
+        content: Text(message , style: const TextStyle(color: Colors.black),),
+        behavior: SnackBarBehavior.floating,
+        action: SnackBarAction(
+          label: 'OK',
+          onPressed: scaffold.hideCurrentSnackBar,
+          textColor: Colors.black,
+        ),
+      ),
+    );
+  } else if (type == "info") {
+    scaffold.showSnackBar(
+      SnackBar(
+        backgroundColor: kSecondaryColor,
+        content: Text(message , style: const TextStyle(color: Colors.black),),
+        behavior: SnackBarBehavior.floating,
+        action: SnackBarAction(
+          label: 'OK',
+          onPressed: scaffold.hideCurrentSnackBar,
+          textColor: Colors.black,
+        ),
+      ),
+    );
+  } else {
+    scaffold.showSnackBar(
+      SnackBar(
+        backgroundColor: kPrimaryColor,
+        behavior: SnackBarBehavior.floating,
+        content: Text(message , style: const TextStyle(color: Colors.black),),
+        action: SnackBarAction(
+          label: 'OK',
+          onPressed: scaffold.hideCurrentSnackBar,
+          textColor: Colors.black,
+        ),
+      ),
+    );
+  }
 }

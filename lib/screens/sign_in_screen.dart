@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:socket_flutter/screens/home_screen.dart';
+import 'package:socket_flutter/screens/landing_screen.dart';
 import 'package:socket_flutter/screens/sign_up_screen.dart';
 import '../utils/constants.dart';
 
@@ -172,7 +172,7 @@ class _SignInScreenState extends State<SignInScreen> {
               child: GestureDetector(
                 onTap: () => Navigator.of(context).push(
                   MaterialPageRoute(
-                    builder: (context) => const HomeScreen(),
+                    builder: (context) => const LandingScreen(),
                   ),
                 ),
                 child: Container(

@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:socket_flutter/models/Chat.dart';
 import 'package:socket_flutter/utils/constants.dart';
 
-class ChatCard extends StatelessWidget {
-  const ChatCard({Key? key, required this.chat, required this.press})
+class UserCard extends StatelessWidget {
+  const UserCard({Key? key, required this.chat, required this.press})
       : super(key: key);
 
   final Chat chat;
@@ -63,20 +63,18 @@ class ChatCard extends StatelessWidget {
                     height: kDefaultPadding / 2,
                   ),
                   Text(
-                    chat.lastMessage,
-                    style: const TextStyle(
+                    "Hey! How are you?",
+                    style: TextStyle(
                       fontSize: 14,
-                      fontWeight: FontWeight.w400,
+                      fontWeight: FontWeight.w100,
+                      color: Theme.of(context)
+                          .textTheme
+                          .bodyText1!
+                          .color!
+                          .withOpacity(0.64),
                     ),
                   ),
                 ],
-              ),
-            ),
-            Text(
-              chat.time,
-              style: const TextStyle(
-                fontSize: 12,
-                fontWeight: FontWeight.w400,
               ),
             ),
           ],

@@ -1,4 +1,7 @@
+// ignore_for_file: file_names, constant_identifier_names
+
 enum ChatMessageType { text, audio, image, video }
+
 enum MessageStatus { not_sent, not_view, viewed }
 
 class ChatMessage {
@@ -15,7 +18,7 @@ class ChatMessage {
   });
 }
 
-List demeChatMessages = [
+List<ChatMessage> demoChatMessages = [
   ChatMessage(
     text: "Hi Sajol,",
     messageType: ChatMessageType.text,
@@ -39,6 +42,12 @@ List demeChatMessages = [
     messageType: ChatMessageType.video,
     messageStatus: MessageStatus.viewed,
     isSender: true,
+  ),
+  ChatMessage(
+    text: "",
+    messageType: ChatMessageType.image,
+    messageStatus: MessageStatus.viewed,
+    isSender: false,
   ),
   ChatMessage(
     text: "Error happend",

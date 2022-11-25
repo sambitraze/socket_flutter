@@ -1,19 +1,18 @@
 import 'package:flutter/material.dart';
-import 'package:socket_flutter/components/chat_card.dart';
 import 'package:socket_flutter/components/filled_outline_button.dart';
+import 'package:socket_flutter/components/user_card.dart';
 import 'package:socket_flutter/models/Chat.dart';
-import 'package:socket_flutter/screens/chat_screen.dart';
 import 'package:socket_flutter/utils/constants.dart';
 import 'package:socket_flutter/utils/show_toast.dart';
 
-class HomeScreen extends StatefulWidget {
-  const HomeScreen({super.key});
+class FriendListScreen extends StatefulWidget {
+  const FriendListScreen({super.key});
 
   @override
-  State<HomeScreen> createState() => _HomeScreenState();
+  State<FriendListScreen> createState() => _FriendListScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen> {
+class _FriendListScreenState extends State<FriendListScreen> {
   int tabIndex = 0;
   @override
   Widget build(BuildContext context) {
@@ -47,7 +46,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     tabIndex = 0;
                   });
                 },
-                text: "All Chats",
+                text: "All",
                 isFilled: tabIndex == 0 ? true : false,
               ),
               const SizedBox(
@@ -70,18 +69,9 @@ class _HomeScreenState extends State<HomeScreen> {
           child: ListView.builder(
             itemCount: chatsData.length,
             itemBuilder: (context, index) {
-              return ChatCard(
+              return UserCard(
                 chat: chatsData[index],
-                press: () {
-                  Navigator.of(context).push(
-                    MaterialPageRoute(
-                      builder: (context) => ChatScreen(
-                        isGroup: index.isEven,
-                        chat: chatsData[index],
-                      ),
-                    ),
-                  );
-                },
+                press: () {},
               );
             },
           ),
@@ -109,7 +99,7 @@ class _HomeScreenState extends State<HomeScreen> {
           const SizedBox(
             width: kDefaultPadding / 2,
           ),
-          const Text('Chats'),
+          const Text('Friends'),
         ],
       ),
       actions: [

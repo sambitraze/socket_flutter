@@ -20,6 +20,12 @@ ThemeData lightThemeData(BuildContext context) {
       secondary: kSecondaryColor,
       error: kErrorColor,
     ),
+    bottomNavigationBarTheme: BottomNavigationBarThemeData(
+      backgroundColor: kContentColorDarkTheme,
+      selectedItemColor: kContentColorLightTheme.withOpacity(0.8),
+      unselectedItemColor: kContentColorLightTheme.withOpacity(0.3),
+      selectedIconTheme: const IconThemeData(color: kPrimaryColor),
+    ),
   );
 }
 
@@ -36,6 +42,12 @@ ThemeData darkThemeData(BuildContext context) {
       primary: kPrimaryColor,
       secondary: kSecondaryColor,
       error: kErrorColor,
+    ),
+    bottomNavigationBarTheme: BottomNavigationBarThemeData(
+      backgroundColor: kContentColorLightTheme,
+      selectedItemColor: Colors.white70,
+      unselectedItemColor: kContentColorDarkTheme.withOpacity(0.3),
+      selectedIconTheme: const IconThemeData(color: kPrimaryColor),
     ),
   );
 }

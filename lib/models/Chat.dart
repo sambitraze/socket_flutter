@@ -1,3 +1,5 @@
+// ignore_for_file: file_names
+
 class Chat {
   final String name, lastMessage, image, time;
   final bool isActive;
@@ -11,7 +13,7 @@ class Chat {
   });
 }
 
-List chatsData = [
+List<Chat> chatsData = [
   Chat(
     name: "Jenny Wilson",
     lastMessage: "Hope you are doing well...",
