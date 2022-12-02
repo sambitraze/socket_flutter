@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "521000123580",
+    "project_id": "ezchat-1efe8",
+    "storage_bucket": "ezchat-1efe8.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:521000123580:android:0e75f6cd144bddf3cea4b9",
+        "android_client_info": {
+          "package_name": "com.example.socket_flutter"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "521000123580-uncqri7lc11k0csrbp2fv9e6qu1q3mfc.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAOpJJx_D6_8ISWvP8MxQK_SFTjUhL6wVA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "521000123580-uncqri7lc11k0csrbp2fv9e6qu1q3mfc.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "521000123580-2e1rvfd239q48a120j3q1qpsq9r68g8e.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.socketFlutter"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>521000123580-2e1rvfd239q48a120j3q1qpsq9r68g8e.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.521000123580-2e1rvfd239q48a120j3q1qpsq9r68g8e</string>
+	<key>API_KEY</key>
+	<string>AIzaSyCX0FR5d0Z1fjiK6Ab4mTAcoz3BSCwAYUU</string>
+	<key>GCM_SENDER_ID</key>
+	<string>521000123580</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.example.socketFlutter</string>
+	<key>PROJECT_ID</key>
+	<string>ezchat-1efe8</string>
+	<key>STORAGE_BUCKET</key>
+	<string>ezchat-1efe8.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:521000123580:ios:8df8e9aab694b660cea4b9</string>
+</dict>
+</plist>
