@@ -4,6 +4,7 @@ import 'package:socket_flutter/models/Chat.dart';
 import 'package:socket_flutter/models/ChatMessage.dart';
 import 'package:socket_flutter/utils/constants.dart';
 import 'package:socket_flutter/utils/show_toast.dart';
+import 'package:socket_io_client/socket_io_client.dart' as IO;
 
 class ChatScreen extends StatefulWidget {
   const ChatScreen({super.key, required this.isGroup, required this.chat});
@@ -15,6 +16,36 @@ class ChatScreen extends StatefulWidget {
 }
 
 class _ChatScreenState extends State<ChatScreen> {
+  final IO.Socket socket = IO.io('http://192.168.2.104:8080', <String, dynamic>{
+    'transports': ['websocket'],
+    'autoConnect': false,
+  });
+  _connectSocket() {
+    print("connect try start");
+
+    socket.connect();
+    socket.onConnect((_) => print("conencted: ${socket.id}"));
+    socket.onConnectError((_) => print("conencterror: ${socket.id}"));
+    socket.onConnectTimeout((_) => print("conenct timeout: ${socket.id}"));
+    socket.onDisconnect((_) => print("disconnected"));
+  }
+
+  // dispose socket
+  @override
+  void dispose() {
+    super.dispose();
+    _messageController.dispose();
+    socket.dispose();
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _connectSocket();
+  }
+  List<ChatMessage> chats = [];
+
+  final TextEditingController _messageController = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -25,10 +56,10 @@ class _ChatScreenState extends State<ChatScreen> {
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: kDefaultPadding),
               child: ListView.builder(
-                itemCount: demoChatMessages.length,
+                itemCount: chats.length,
                 itemBuilder: (context, index) {
                   return MessageCard(
-                    chatMessage: demoChatMessages[index],
+                    chatMessage: chats[index],
                     isGroup: widget.isGroup,
                   );
                 },
@@ -89,6 +120,7 @@ class _ChatScreenState extends State<ChatScreen> {
                     ),
                     Expanded(
                       child: TextField(
+                        controller: _messageController,
                         decoration: InputDecoration(
                           hintText: "Type message",
                           hintStyle: TextStyle(

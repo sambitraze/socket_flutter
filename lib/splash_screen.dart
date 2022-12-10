@@ -25,7 +25,7 @@ class _SplashScrrenState extends State<SplashScrren> {
   startTime(context) async {
     var duration = const Duration(milliseconds: 2500);
     var duration2 = const Duration(milliseconds: 3500);
-    var duration3 = const Duration(milliseconds: 3500);
+    var duration3 = const Duration(milliseconds: 7000);
     // BaseService.makeUnauthenticatedRequest()
     Timer(duration, (){
       setState(() {

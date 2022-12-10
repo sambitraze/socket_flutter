@@ -4,7 +4,7 @@ import 'package:http/http.dart' as http;
 
 class BaseService {
   // ignore: constant_identifier_names
-  static const BASE_URL = "https://cms.ezchat.agpro.co.in/";
+  static const BASE_URL = "https://admin.ezchat.agpro.co.in/";
   static final Map<String, String> headers = {
     "Content-Type": "application/json"
   };

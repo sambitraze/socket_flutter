@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:socket_flutter/services/auth_service.dart';
 import 'package:socket_flutter/utils/constants.dart';
 
 class SettingsScreen extends StatefulWidget {
@@ -9,6 +10,21 @@ class SettingsScreen extends StatefulWidget {
 }
 
 class _SettingsScreenState extends State<SettingsScreen> {
+  Map<String, dynamic> user = {};
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    fetchUser();
+  }
+
+  fetchUser() async {
+    user = await AuthService.getSavedUser();
+    setState(() {
+      user = user;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -29,10 +45,15 @@ class _SettingsScreenState extends State<SettingsScreen> {
             const SizedBox(
               height: kDefaultPadding * 2,
             ),
-            const CircleAvatar(
-              radius: 48,
-              backgroundImage: AssetImage('assets/images/user_2.png'),
-            ),
+            user["photo_url"] == null
+                ? const CircleAvatar(
+                    radius: 48,
+                    backgroundImage: AssetImage('assets/images/user_2.png'),
+                  )
+                : CircleAvatar(
+                    radius: 48,
+                    backgroundImage: NetworkImage(user["photo_url"]),
+                  ),
             const SizedBox(
               height: kDefaultPadding * 2,
             ),
@@ -47,7 +68,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 "First Name",
               ),
               subtitle: Text(
-                "John",
+                user['first_name'] ?? "",
                 style: Theme.of(context).textTheme.bodyText1,
               ),
               trailing: Icon(
@@ -71,7 +92,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 "Last Name",
               ),
               subtitle: Text(
-                "Doe",
+                user['last_name'] ?? "",
                 style: Theme.of(context).textTheme.bodyText1,
               ),
               trailing: Icon(
@@ -95,7 +116,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 "Email",
               ),
               subtitle: Text(
-                "jhon.doe@gmail.com",
+                user['email'] ?? "",
                 style: Theme.of(context).textTheme.bodyText1,
               ),
             ),
@@ -113,7 +134,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 "Phone",
               ),
               subtitle: Text(
-                "+91 1234567890",
+                user['phone'] ?? "",
                 style: Theme.of(context).textTheme.bodyText1,
               ),
               trailing: Icon(
@@ -127,6 +148,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
               height: kDefaultPadding / 4,
             ),
             ListTile(
+              onTap: () async {
+                await AuthService.logout(context);
+              },
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(10),
               ),

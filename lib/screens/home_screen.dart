@@ -3,8 +3,11 @@ import 'package:socket_flutter/components/chat_card.dart';
 import 'package:socket_flutter/components/filled_outline_button.dart';
 import 'package:socket_flutter/models/Chat.dart';
 import 'package:socket_flutter/screens/chat_screen.dart';
+import 'package:socket_flutter/services/auth_service.dart';
+import 'package:socket_flutter/services/base_service.dart';
 import 'package:socket_flutter/utils/constants.dart';
 import 'package:socket_flutter/utils/show_toast.dart';
+import 'package:http/http.dart' as http;
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -21,7 +24,10 @@ class _HomeScreenState extends State<HomeScreen> {
       appBar: buildAppBar(),
       body: buildBody(),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {},
+        onPressed: () async{
+          http.Response response =  await AuthService.makeAuthenticatedRequest("${BaseService.BASE_URL}users",method: "GET");
+          print(response.body);
+        },
         child: const Icon(
           Icons.add,
           color: Colors.white,
@@ -76,7 +82,8 @@ class _HomeScreenState extends State<HomeScreen> {
                   Navigator.of(context).push(
                     MaterialPageRoute(
                       builder: (context) => ChatScreen(
-                        isGroup: index.isEven,
+                        // isGroup: index.isEven,
+                        isGroup: false,
                         chat: chatsData[index],
                       ),
                     ),
