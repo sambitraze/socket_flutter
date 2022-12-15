@@ -16,7 +16,6 @@ class _LandingScreenState extends State<LandingScreen> {
   Map user = {};
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     fetchUser();
   }
@@ -32,7 +31,9 @@ class _LandingScreenState extends State<LandingScreen> {
   Widget pageBuilder() {
     switch (selectedIndex) {
       case 0:
-        return const HomeScreen();
+        return HomeScreen(
+          user: user,
+        );
       case 1:
         return const FriendListScreen();
       case 2:
@@ -40,7 +41,9 @@ class _LandingScreenState extends State<LandingScreen> {
       case 3:
         return const SettingsScreen();
       default:
-        return const HomeScreen();
+        return HomeScreen(
+          user: user,
+        );
     }
   }
 

@@ -5,29 +5,86 @@ import 'package:socket_flutter/models/ChatMessage.dart';
 import 'package:socket_flutter/utils/constants.dart';
 import 'package:socket_flutter/utils/show_toast.dart';
 import 'package:socket_io_client/socket_io_client.dart' as IO;
+import 'package:timeago/timeago.dart' as timeago;
+
+import '../models/User.dart';
 
 class ChatScreen extends StatefulWidget {
-  const ChatScreen({super.key, required this.isGroup, required this.chat});
+  const ChatScreen({
+    super.key,
+    required this.isGroup,
+    required this.chat,
+    required this.currentUser,
+    required this.chatUser,
+  });
   final bool isGroup;
   final Chat chat;
+  final User chatUser;
+  final Map currentUser;
 
   @override
   State<ChatScreen> createState() => _ChatScreenState();
 }
 
 class _ChatScreenState extends State<ChatScreen> {
-  final IO.Socket socket = IO.io('http://192.168.2.104:8080', <String, dynamic>{
-    'transports': ['websocket'],
-    'autoConnect': false,
-  });
+  late IO.Socket socket;
   _connectSocket() {
     print("connect try start");
+    socket = IO.io('http://192.168.2.104:8080', <String, dynamic>{
+      'transports': ['websocket'],
+      'autoConnect': false,
+      'query': {
+        'user': widget.currentUser['id'],
+      }
+    });
+
+    socket.on(
+      "passmessage",
+      (data) {
+        setState(() {
+          chats.add(
+            ChatMessage(
+              isSender: false,
+              text: data['text'],
+              messageType: ChatMessageType.text,
+              messageStatus: MessageStatus.viewed,
+            ),
+          );
+        });
+      },
+    );
 
     socket.connect();
     socket.onConnect((_) => print("conencted: ${socket.id}"));
     socket.onConnectError((_) => print("conencterror: ${socket.id}"));
     socket.onConnectTimeout((_) => print("conenct timeout: ${socket.id}"));
     socket.onDisconnect((_) => print("disconnected"));
+  }
+
+  _sendMessage() {
+    if (_messageController.text.isNotEmpty) {
+      socket.emit('message', {
+        'text': _messageController.text,
+        'sender': widget.currentUser['id'],
+        'receiver': widget.chatUser.id,
+        'time': DateTime.now().toString(),
+        'messageType': "text",
+        'messageStatus': "not_sent",
+      });
+      setState(() {
+        chats.add(
+        ChatMessage(
+          isSender: true,
+          text: _messageController.text,
+          messageType: ChatMessageType.text,
+          messageStatus: MessageStatus.viewed,
+        ),
+      );
+      });
+      _messageController.clear();
+    } else {
+      showToast(context, "Message can't be empty", "info");
+    }
   }
 
   // dispose socket
@@ -43,6 +100,7 @@ class _ChatScreenState extends State<ChatScreen> {
     super.initState();
     _connectSocket();
   }
+
   List<ChatMessage> chats = [];
 
   final TextEditingController _messageController = TextEditingController();
@@ -134,25 +192,49 @@ class _ChatScreenState extends State<ChatScreen> {
                         ),
                       ),
                     ),
-                    Icon(
-                      Icons.attach_file,
-                      color: Theme.of(context)
-                          .textTheme
-                          .bodyText1!
-                          .color!
-                          .withOpacity(0.6),
-                    ),
-                    const SizedBox(
-                      width: kDefaultPadding / 4,
-                    ),
-                    Icon(
-                      Icons.camera_alt_outlined,
-                      color: Theme.of(context)
-                          .textTheme
-                          .bodyText1!
-                          .color!
-                          .withOpacity(0.6),
-                    ),
+                    IconButton(
+                      icon: Icon(
+                        Icons.send,
+                        color: Theme.of(context)
+                            .textTheme
+                            .bodyText1!
+                            .color!
+                            .withOpacity(0.6),
+                      ),
+                      onPressed: _sendMessage,
+                    )
+                    // _messageController.text.trim().isNotEmpty
+                    //     ? Icon(
+                    //         Icons.send,
+                    //         color: Theme.of(context)
+                    //             .textTheme
+                    //             .bodyText1!
+                    //             .color!
+                    //             .withOpacity(0.6),
+                    //       )
+                    //     : Icon(
+                    //         Icons.attach_file,
+                    //         color: Theme.of(context)
+                    //             .textTheme
+                    //             .bodyText1!
+                    //             .color!
+                    //             .withOpacity(0.6),
+                    //       ),
+                    // _messageController.text.trim().isNotEmpty
+                    //     ? const SizedBox()
+                    //     : const SizedBox(
+                    //         width: kDefaultPadding / 4,
+                    //       ),
+                    // _messageController.text.trim().isNotEmpty
+                    //     ? const SizedBox()
+                    //     : Icon(
+                    //         Icons.camera_alt_outlined,
+                    //         color: Theme.of(context)
+                    //             .textTheme
+                    //             .bodyText1!
+                    //             .color!
+                    //             .withOpacity(0.6),
+                    //       ),
                   ],
                 ),
               ),
@@ -173,9 +255,9 @@ class _ChatScreenState extends State<ChatScreen> {
               Navigator.pop(context);
             },
           ),
-          const CircleAvatar(
+          CircleAvatar(
             radius: 20,
-            backgroundImage: AssetImage('assets/images/user_2.png'),
+            backgroundImage: NetworkImage(widget.chatUser.photoUrl),
           ),
           const SizedBox(
             width: kDefaultPadding * 0.75,
@@ -184,15 +266,26 @@ class _ChatScreenState extends State<ChatScreen> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                widget.isGroup ? 'Group Chat' : widget.chat.name,
+                widget.isGroup ? 'Group Chat' : widget.chatUser.firstName,
                 style: const TextStyle(
                   fontSize: 16,
                   fontWeight: FontWeight.bold,
                 ),
               ),
-              Text(
-                widget.isGroup ? "16 Members" : "Active ${widget.chat.time}",
-                style: const TextStyle(fontSize: 12),
+              SizedBox(
+                width: 100,
+                child: Text(
+                  widget.isGroup
+                      ? "16 Members"
+                      // : "Active ${timeago.format(DateTime.now())}",
+                      : "Active",
+                  style: const TextStyle(
+                    fontSize: 12,
+                  ),
+                  overflow: TextOverflow.fade,
+                  maxLines: 1,
+                  softWrap: false,
+                ),
               )
             ],
           ),

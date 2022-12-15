@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:socket_flutter/models/Chat.dart';
 import 'package:socket_flutter/utils/constants.dart';
-
+import 'package:timeago/timeago.dart' as timeago;
 class ChatCard extends StatelessWidget {
   const ChatCard({Key? key, required this.chat, required this.press})
       : super(key: key);
@@ -24,7 +24,7 @@ class ChatCard extends StatelessWidget {
               children: [
                 CircleAvatar(
                   radius: 24,
-                  backgroundImage: AssetImage(chat.image),
+                  backgroundImage: NetworkImage(chat.image),
                 ),
                 if (chat.isActive)
                   Positioned(
@@ -73,7 +73,7 @@ class ChatCard extends StatelessWidget {
               ),
             ),
             Text(
-              chat.time,
+              timeago.format(chat.time),
               style: const TextStyle(
                 fontSize: 12,
                 fontWeight: FontWeight.w400,

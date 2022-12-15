@@ -16,6 +16,21 @@ class ChatMessage {
     required this.messageStatus,
     required this.isSender,
   });
+
+  ChatMessage.fromJson(Map<String, dynamic> json)
+      : text = json['text'],
+        messageType = json['messageType'],
+        messageStatus = json['messageStatus'],
+        isSender = json['isSender'];
+
+  Map<String, dynamic> toJson() {
+    return {
+      'text': text,
+      'messageType': messageType,
+      'messageStatus': messageStatus,
+      'isSender': isSender,
+    };
+  }
 }
 
 List<ChatMessage> demoChatMessages = [
