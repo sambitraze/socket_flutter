@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:socket_flutter/components/message_card.dart';
+import 'package:socket_flutter/main.dart';
 import 'package:socket_flutter/models/Chat.dart';
 import 'package:socket_flutter/models/ChatMessage.dart';
+import 'package:socket_flutter/models/message.dart' as ChatMessageV2;
+import 'package:socket_flutter/objectbox.g.dart';
 import 'package:socket_flutter/utils/constants.dart';
 import 'package:socket_flutter/utils/show_toast.dart';
 import 'package:socket_io_client/socket_io_client.dart' as IO;
@@ -27,6 +30,7 @@ class ChatScreen extends StatefulWidget {
 }
 
 class _ChatScreenState extends State<ChatScreen> {
+  final messageBox = objectbox.store.box<ChatMessageV2.ChatMessage>();
   late IO.Socket socket;
   _connectSocket() {
     print("connect try start");
@@ -37,10 +41,58 @@ class _ChatScreenState extends State<ChatScreen> {
         'user': widget.currentUser['id'],
       }
     });
+    final query = messageBox
+        .query(
+          (ChatMessage_.sender.equals(widget.chatUser.id).or(
+                ChatMessage_.sender.equals(
+                  widget.currentUser['id'],
+                ),
+              )).and(
+            ChatMessage_.reciever.equals(widget.currentUser['id']).or(
+                  ChatMessage_.reciever.equals(widget.chatUser.id),
+                ),
+          ),
+        )
+        .build();
+    query.find().forEach((element) {
+      if (element.sender == widget.currentUser['id'] &&
+          element.reciever == widget.chatUser.id) {
+        chats.add(
+          ChatMessage(
+            isSender: true,
+            text: element.text ?? "",
+            messageType: ChatMessageType.text,
+            messageStatus: MessageStatus.viewed,
+          ),
+        );
+      } else if (element.sender == widget.chatUser.id &&
+          element.reciever == widget.currentUser['id']) {
+        chats.add(
+          ChatMessage(
+            isSender: false,
+            text: element.text ?? "",
+            messageType: ChatMessageType.text,
+            messageStatus: MessageStatus.viewed,
+          ),
+        );
+      }
+    });
+    setState(() {});
 
     socket.on(
       "passmessage",
       (data) {
+        messageBox.put(
+          ChatMessageV2.ChatMessage(
+            uid: "uuid.v4()",
+            text: data['text'],
+            reciever: widget.currentUser['id'],
+            sender: widget.chatUser.id,
+            time: DateTime.now(),
+            messageType: "text",
+            messageStatus: "not_sent",
+          ),
+        );
         setState(() {
           chats.add(
             ChatMessage(
@@ -63,6 +115,17 @@ class _ChatScreenState extends State<ChatScreen> {
 
   _sendMessage() {
     if (_messageController.text.isNotEmpty) {
+      messageBox.put(
+        ChatMessageV2.ChatMessage(
+          uid: "uuid.v4()",
+          text: _messageController.text,
+          reciever: widget.chatUser.id,
+          sender: widget.currentUser['id'],
+          time: DateTime.now(),
+          messageType: "text",
+          messageStatus: "not_sent",
+        ),
+      );
       socket.emit('message', {
         'text': _messageController.text,
         'sender': widget.currentUser['id'],
@@ -73,13 +136,13 @@ class _ChatScreenState extends State<ChatScreen> {
       });
       setState(() {
         chats.add(
-        ChatMessage(
-          isSender: true,
-          text: _messageController.text,
-          messageType: ChatMessageType.text,
-          messageStatus: MessageStatus.viewed,
-        ),
-      );
+          ChatMessage(
+            isSender: true,
+            text: _messageController.text,
+            messageType: ChatMessageType.text,
+            messageStatus: MessageStatus.viewed,
+          ),
+        );
       });
       _messageController.clear();
     } else {

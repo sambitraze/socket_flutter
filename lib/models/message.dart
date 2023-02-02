@@ -5,21 +5,24 @@ var uuid = Uuid();
 
 @Entity()
 class ChatMessage {
-  // Each "Entity" needs a unique integer ID property.
-  // Add `@Id()` annotation if its name isn't "id" (case insensitive).
-  String id = uuid.v1();
-
+  @Id()
+  int id = 0;
+  String? uid;
   String? text;
-
+  String? reciever;
+  String? sender;
   @Property(type: PropertyType.date) // Store as int in milliseconds
-  DateTime date;
+  DateTime time;
+  String? messageType;
+  String? messageStatus;
 
-  @Transient() // Make this field ignored, not stored in the database.
-  int? notPersisted;
-
-  // An empty default constructor is needed but you can use optional args.
-  ChatMessage({this.text, DateTime? date}) : date = date ?? DateTime.now();
-
-  // Note: just for logs in the examples below(), not needed by ObjectBox.
-  toString() => 'Note{id: $id, text: $text}';
+  ChatMessage({
+    this.uid,
+    this.text,
+    this.reciever,
+    this.sender,
+    DateTime? time,
+    this.messageType,
+    this.messageStatus,
+  }) : time = time ?? DateTime.now();
 }

@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:socket_flutter/objectbox.dart';
 import 'package:socket_flutter/splash_screen.dart';
 import 'package:socket_flutter/utils/theme.dart';
-
+late ObjectBox objectbox;
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  objectbox = await ObjectBox.create();
   runApp(const MyApp());
 }
 
